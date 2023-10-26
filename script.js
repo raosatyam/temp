@@ -292,7 +292,31 @@ instance.bind("ready", function () {
     helper: "clone",
     containment: "body",
     appendTo: "#diagram",
+    start: function(event, ui) {
+        if ("ontouchstart" in document.documentElement) {
+            // Use touch events for mobile devices
+            $(this).data("mobile-drag", true);
+        }
+    },
+    stop: function(event, ui) {
+        if ($(this).data("mobile-drag")) {
+            // Handle the end of the mobile drag operation here
+        }
+        $(this).removeData("mobile-drag");
+    },
   });
+  $("#toolbox .control").on("touchstart", function(event) {
+    // Handle the touchstart event for mobile devices
+    // You can customize this to start the drag operation as needed
+    event.preventDefault(); // Prevent default touch event behavior
+    // Implement the logic to start the drag operation
+});
+
+$("#toolbox .control").on("touchend", function(event) {
+    // Handle the touchend event for mobile devices
+    // You can customize this to end the drag operation as needed
+    // Implement the logic to end the drag operation
+});
   // $( "#diagram" ).draggable({ disabled: true });
   // $( "#diagram" ).draggable("instance");
 
