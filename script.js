@@ -1,4 +1,28 @@
 // https://stackoverflow.com/a/2117523
+function touchHandler(event) {
+  var touch = event.changedTouches[0];
+
+  var simulatedEvent = document.createEvent("MouseEvent");
+      simulatedEvent.initMouseEvent({
+      touchstart: "mousedown",
+      touchmove: "mousemove",
+      touchend: "mouseup"
+  } [event.type], true, true, window, 1,
+      touch.screenX, touch.screenY,
+      touch.clientX, touch.clientY, false,
+      false, false, false, 0, null);
+
+  touch.target.dispatchEvent(simulatedEvent);
+  
+}
+
+function init() {
+  document.addEventListener("touchstart", touchHandler, true);
+  document.addEventListener("touchmove", touchHandler, true);
+  document.addEventListener("touchend", touchHandler, true);
+  document.addEventListener("touchcancel", touchHandler, true);
+}
+init();
 
 var xy;
 xy = Math.floor(Math.random() * 1000 + 1);
@@ -266,11 +290,11 @@ instance.bind("ready", function () {
         .css({ top: event.pageY + "px", left: event.pageX + "px" });
     }
   });
-  $("body").on("click touchstart", ".delete-connection", function (event) {
+  $("body").on("click", ".delete-connection", function (event) {
     instance.deleteConnection(window.selectedConnection);
   });
 
-  $(document).bind("click touchstart", function (event) {
+  $(document).bind("click", function (event) {
     $("div.custom-menu").remove();
   });
 
@@ -284,7 +308,7 @@ instance.bind("ready", function () {
       .css({ top: event.pageY + "px", left: event.pageX + "px" });
   });
 
-  $("body").on("click touchstart", ".delete-control", function (event) {
+  $("body").on("click", ".delete-control", function (event) {
     instance.remove(window.selectedControl);
   });
 
@@ -292,31 +316,7 @@ instance.bind("ready", function () {
     helper: "clone",
     containment: "body",
     appendTo: "#diagram",
-    start: function(event, ui) {
-        if ("ontouchstart" in document.documentElement) {
-            // Use touch events for mobile devices
-            $(this).data("mobile-drag", true);
-        }
-    },
-    stop: function(event, ui) {
-        if ($(this).data("mobile-drag")) {
-            // Handle the end of the mobile drag operation here
-        }
-        $(this).removeData("mobile-drag");
-    },
   });
-  $("#toolbox .control").on("touchstart", function(event) {
-    // Handle the touchstart event for mobile devices
-    // You can customize this to start the drag operation as needed
-    event.preventDefault(); // Prevent default touch event behavior
-    // Implement the logic to start the drag operation
-});
-
-$("#toolbox .control").on("touchend", function(event) {
-    // Handle the touchend event for mobile devices
-    // You can customize this to end the drag operation as needed
-    // Implement the logic to end the drag operation
-});
   // $( "#diagram" ).draggable({ disabled: true });
   // $( "#diagram" ).draggable("instance");
 
